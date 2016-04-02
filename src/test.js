@@ -2,7 +2,7 @@ function noop() {};
 
 function Test(config) {
 	config = config || {};
-	this.tries = config.tries || 5;
+	this.tries = config.tries || 1000;
 	this.setup = config.setup || noop;
 	this.main = config.main || noop;
 	this.destroy = config.destroy || noop;
