@@ -9,22 +9,28 @@ function Test(config) {
 	this.description = config.description || '';
 	this.currentTestIteration = 0;
 	this.totalTime = 0;
+	this.startTime = 0;
 };
 
 Test.prototype.run = function() {
 	if (this.currentTestIteration < this.tries) {
+
+		if (this.currentTestIteration === 0) {
+			this.startTime = Date.now();
+		}
+
 		this.currentTestIteration++;
 		this.setup();
-		var startTime = Date.now();
 		this.main();
-		this.results.push(Date.now() - startTime);
 		this.destroy();
-		this.run();
+		return this.run();
 	} else {
-		return {
-			results: this.results,
-			average: this.results / this.tries,
+		this.totalTime = Date.now() - this.startTime;
+		var result = {
+			results: this.totalTime,
+			average: this.totalTime / this.tries,
 			description: this.description
 		};
+		return result;
 	}
 };

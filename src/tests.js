@@ -1,3 +1,5 @@
+'use strict';
+
 const OUTERDIVS = 1000,
  	INNERDIVS = 1,
  	PARAS = 1,
@@ -36,7 +38,7 @@ function template() {
 }
 
 
-var outputDiv = document.getElementsByClassName(".output")[0];
+var outputDiv = document.getElementsByClassName("output")[0];
 var styleTag = document.getElementsByTagName("style")[0];
 
 
@@ -58,7 +60,7 @@ function Test1() {
 
 var test1 = new Test({
 	setup: setup,
-	description: 'Test 1: No CSS'
+	description: 'Test 1: No CSS',
 	main: Test1
 });
 
