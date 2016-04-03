@@ -57,7 +57,7 @@ function destroy() {
 	styleTag.textContent = '';
 }
 
-var results = [];
+var resultNoCSS = [], results = [], resultsSingleSelector = [];
 
 /**
  * Test 1: No CSS
@@ -74,7 +74,7 @@ var test1 = new Test({
 	main: Test1
 });
 
-results.push(test1.run());
+resultNoCSS.push(test1.run());
 
 /**
  * Test 2: Selection using nested tag selector with first child selector (depth 4)
@@ -362,7 +362,7 @@ var test17 = new Test({
 	tries: 10000
 });
 
-results.push(test17.run());
+resultsSingleSelector.push(test17.run());
 
 /**
  * Test 18: Tests on single element for ID selector
@@ -375,27 +375,40 @@ function Test18() {
 var test18 = new Test({
 	setup: setup,
 	destroy: destroy,
-	description: 'Test 17: Tests on single element for ID selector',
+	description: 'Test 18: Tests on single element for ID selector',
 	main: Test18,
 	tries: 10000
 });
 
-results.push(test18.run());
+resultsSingleSelector.push(test18.run());
 
-var resultHtml = '<table>';
-resultHtml += '<tr>';
-resultHtml += '<th> Test Description </th>';
-resultHtml += '<th> Average time  </th>';
-resultHtml += '<th> Total time </th>';
-resultHtml += '</tr>';
-for(var i = 0; i < results.length; i++) {
-	resultHtml += '<tr>'
-	resultHtml += '<td>' + results[i]["description"] + '</td>';
-	resultHtml += '<td>' + results[i]["average"] + '</td>';
-	resultHtml += '<td>' + results[i]["results"] + '</td>';
-	resultHtml += '</tr>'
+function getTable(results) {
+	var min = Math.min.apply(Math, results.map(function(result) { return result.average; }));
+
+	var resultHtml = '<table>';
+	resultHtml += '<tr>';
+	resultHtml += '<th> Test Description </th>';
+	resultHtml += '<th> Average time  </th>';
+	resultHtml += '<th> Total time </th>';
+	resultHtml += '</tr>';
+	for(var i = 0; i < results.length; i++) {
+		resultHtml += '<tr>'
+		resultHtml += '<td>' + results[i]["description"] + '</td>';
+		resultHtml += '<td style="background-color: hsl(' +
+	                      (120 - (120 * ((results[i]["average"] / min) - 1 > 1 ?
+	                      	1 : (results[i]["average"] / min) - 1) >> 0)) +
+	                      ', 100%, 50%);">' + results[i]["average"] + '</td>';
+
+		resultHtml += '<td>' + results[i]["results"] + '</td>';
+		resultHtml += '</tr>'
+	}
+	resultHtml += '</table>';
+	return resultHtml;
 }
 
-resultHtml += '</table>';
+var resultHtml = '';
+resultHtml += getTable(resultNoCSS);
+resultHtml += getTable(results);
+resultHtml += getTable(resultsSingleSelector);
 
 document.querySelector(".test-results").innerHTML = resultHtml;
