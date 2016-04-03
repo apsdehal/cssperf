@@ -2,7 +2,7 @@ function noop() {};
 
 function Test(config) {
 	config = config || {};
-	this.tries = config.tries || 1000;
+	this.tries = config.tries || 2000;
 	this.setup = config.setup || noop;
 	this.main = config.main || noop;
 	this.destroy = config.destroy || noop;
@@ -13,7 +13,7 @@ function Test(config) {
 };
 
 Test.prototype.run = function() {
-	if (this.currentTestIteration < this.tries) {
+	while (this.currentTestIteration < this.tries) {
 
 		if (this.currentTestIteration === 0) {
 			this.startTime = Date.now();
@@ -23,14 +23,13 @@ Test.prototype.run = function() {
 		this.setup();
 		this.main();
 		this.destroy();
-		return this.run();
-	} else {
-		this.totalTime = Date.now() - this.startTime;
-		var result = {
-			results: this.totalTime,
-			average: this.totalTime / this.tries,
-			description: this.description
-		};
-		return result;
 	}
+
+	this.totalTime = Date.now() - this.startTime;
+	var result = {
+		results: this.totalTime,
+		average: this.totalTime / this.tries,
+		description: this.description
+	};
+	return result;
 };
