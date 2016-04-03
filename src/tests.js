@@ -3,7 +3,7 @@
 const OUTERDIVS = 1,
  	INNERDIVS = 1,
  	PARAS = 1,
- 	SPANS = 1000,
+ 	SPANS = 100,
  	OUTERDIVS_CLASS = "outer-div",
  	INNDERDIV_CLASS = "inner-div",
  	CHILD_CLASS = "child-div",
@@ -12,17 +12,17 @@ const OUTERDIVS = 1,
 function template() {
 	var content = '';
 
-	for (let i = 0; i < OUTERDIVS; i++) {
-		content  += '<div class="' + OUTERDIVS_CLASS + '">';
+	for (var i = 0; i < OUTERDIVS; i++) {
+		content  += '<div class="' + OUTERDIVS_CLASS + '" id="' + OUTERDIVS_CLASS + '">';
 
-		for (let j = 0; j < INNERDIVS; j++) {
+		for (var j = 0; j < INNERDIVS; j++) {
 			content += '<div class="' + INNDERDIV_CLASS + '" id="'
 			+ INNDERDIV_CLASS + '">';
 
-			for (let k = 0; k < PARAS; k++) {
-				content += '<div class="' + CHILD_CLASS + '"">';
+			for (var k = 0; k < PARAS; k++) {
+				content += '<div class="' + CHILD_CLASS + '" id="' + CHILD_CLASS + '">';
 
-				for (let l = 0; l < SPANS; l++) {
+				for (var l = 0; l < SPANS; l++) {
 					content += '<span class="' + SPANS_CLASS + '">';
 					content += l;
 					content += '</span>';
@@ -44,15 +44,15 @@ var templateText = template();
 var outputDiv = document.getElementsByClassName("output")[0];
 var styleTag = document.getElementsByTagName("style")[0];
 
-// outputDiv.innerHTML = templateText;
+outputDiv.innerHTML = templateText;
 
 function setup() {
-	outputDiv.innerHTML = templateText;
+	// outputDiv.innerHTML = templateText;
 	var widthHeight = document.body.offsetWidth + document.body.offsetHeight;
 }
 
 function destroy() {
-	outputDiv.innerHTML = '';
+	// outputDiv.innerHTML = '';
 	var widthHeight = document.body.offsetWidth + document.body.offsetHeight;
 	styleTag.textContent = '';
 }
@@ -274,4 +274,90 @@ var test12 = new Test({
 
 results.push(test12.run());
 
-console.log(results);
+/**
+ * Test 13: Selection using nested ID selector (depth 4)
+ */
+
+function Test13() {
+	styleTag.textContent =
+	'#outer-div #inner-div #child-div span { color: red; }';
+}
+
+var test13 = new Test({
+	setup: setup,
+	destroy: destroy,
+	description: 'Test 14: Selection using nested ID selector (depth: 4)',
+	main: Test13
+});
+
+results.push(test13.run());
+
+/**
+ * Test 14: Selection using nested ID selector (depth 3)
+ */
+
+function Test14() {
+	styleTag.textContent =
+	'#inner-div #child-div span { color: red; }';
+}
+
+var test14 = new Test({
+	setup: setup,
+	destroy: destroy,
+	description: 'Test 14: Selection using nested ID selector (depth: 3)',
+	main: Test14
+});
+
+results.push(test14.run());
+
+/**
+ * Test 15: Selection using nested ID selector (depth 2)
+ */
+
+function Test15() {
+	styleTag.textContent =
+	'#child-div span { color: red; }';
+}
+
+var test15 = new Test({
+	setup: setup,
+	destroy: destroy,
+	description: 'Test 15: Selection using nested ID selector (depth: 2)',
+	main: Test15
+});
+
+/**
+ * Test 16: Selection using attribute selector
+ */
+
+function Test16() {
+	styleTag.textContent =
+	'[class="span"] { color: red; }';
+}
+
+var test16 = new Test({
+	setup: setup,
+	destroy: destroy,
+	description: 'Test 16: Selection using attribute selector',
+	main: Test16
+});
+
+results.push(test16.run());
+
+var resultHtml = '<table>';
+resultHtml += '<tr>';
+resultHtml += '<th> Test Description </th>';
+resultHtml += '<th> Average time  </th>';
+resultHtml += '<th> Total time </th>';
+resultHtml += '</tr>';
+for(var i = 0; i < results.length; i++) {
+	resultHtml += '<tr>'
+	resultHtml += '<td>' + results[i]["description"] + '</td>';
+	resultHtml += '<td>' + results[i]["average"] + '</td>';
+	resultHtml += '<td>' + results[i]["results"] + '</td>';
+	resultHtml += '</tr>'
+}
+
+resultHtml += '</table>';
+
+document.querySelector(".test-results").innerHTML = resultHtml;
