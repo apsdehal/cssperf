@@ -344,6 +344,44 @@ var test16 = new Test({
 
 results.push(test16.run());
 
+outputDiv.innerHTML = '<div class="outer-div" id="outer-div"> Content </div>';
+
+/**
+ * Test 17: Tests on single element for Class selector
+ */
+
+function Test17() {
+	styleTag.textContent = '.outer-div { color : red }';
+}
+
+var test17 = new Test({
+	setup: setup,
+	destroy: destroy,
+	description: 'Test 17: Tests on single element for Class selector',
+	main: Test17,
+	tries: 10000
+});
+
+results.push(test17.run());
+
+/**
+ * Test 18: Tests on single element for ID selector
+ */
+
+function Test18() {
+	styleTag.textContent = '#outer-div { color : red }';
+}
+
+var test18 = new Test({
+	setup: setup,
+	destroy: destroy,
+	description: 'Test 17: Tests on single element for ID selector',
+	main: Test18,
+	tries: 10000
+});
+
+results.push(test18.run());
+
 var resultHtml = '<table>';
 resultHtml += '<tr>';
 resultHtml += '<th> Test Description </th>';
