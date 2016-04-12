@@ -286,7 +286,7 @@ function Test13() {
 var test13 = new Test({
 	setup: setup,
 	destroy: destroy,
-	description: 'Test 14: Selection using nested ID selector (depth: 4)',
+	description: 'Test 13: Selection using nested ID selector (depth: 4)',
 	main: Test13
 });
 
@@ -325,6 +325,8 @@ var test15 = new Test({
 	description: 'Test 15: Selection using nested ID selector (depth: 2)',
 	main: Test15
 });
+
+results.push(test15.run());
 
 /**
  * Test 16: Selection using attribute selector
